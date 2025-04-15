@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Candidature - Hysacam</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-style: italic; }
+        body { font-family: Arial, sans-serif; background-color: #dcdcdc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+        .form-container { width: 100%; max-width: 400px; background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+        h2 { text-align: center; color: #333; text-shadow: 4px 8px 6px rgba(0, 0, 0, 0.5); font-size: 20px; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        label { font-weight: bold; font-size: 14px; display: block; margin-bottom: 5px; color: #444; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; background-color: #f9f9f9; }
+        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Formulaire de Candidature<br>Chez Hysacam</h2>
+    <a href="index.html" style="text-decoration: none;">back&#x25C0;</a>
+    <form id="candidatureForm">
+        <div class="form-group"><label for="nom">Nom :</label><input type="text" id="nom"></div>
+        <div class="form-group"><label for="prenom">Prénom :</label><input type="text" id="prenom"></div>
+        <div class="form-group"><label for="date-naissance">Date de naissance :</label><input type="date" id="date-naissance"></div>
+        <div class="form-group"><label for="adresse">Adresse :</label><input type="text" id="adresse"></div>
+        <div class="form-group"><label for="telephone">Téléphone :</label><input type="tel" id="telephone"></div>
+        <div class="form-group"><label for="email">Email :</label><input type="email" id="email"></div>
+        <div class="form-group"><label for="ville">Ville :</label><input type="text" id="ville"></div>
+        <div class="form-group"><label for="poste">Poste souhaité :</label>
+            <select id="poste">
+                <option value="">Sélectionnez un poste</option>
+                <option value="Conducteur de camion">Conducteur de camion</option>
+                <option value="Agent de collecte">Agent de collecte</option>
+                <option value="Technicien en gestion des déchets">Technicien en gestion des déchets</option>
+                <option value="Autre">Autre</option>
+            </select>
+        </div>
+        <div class="form-group"><label for="formation">Niveau d'étude :</label>
+            <select id="formation">
+                <option value="">Sélectionnez un niveau</option>
+                <option value="Bac">Bac</option>
+                <option value="Bac+2">Bac+2</option>
+                <option value="Bac+5">Bac+5</option>
+                <option value="Autre">Autre</option>
+            </select>
+        </div>
+        <div class="form-group"><label for="experience">Expérience :</label><textarea id="experience"></textarea></div>
+        <button type="submit">Soumettre</button>
+    </form>
+</div>
+
+<script>
+    emailjs.init("sma1XPzsp7cqxvaZc"); // Remplacez par votre User ID EmailJS
+
+    document.getElementById("candidatureForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        // Vérification des champs
+        let inputs = document.querySelectorAll("#candidatureForm input, #candidatureForm select, #candidatureForm textarea");
+        for (let input of inputs) {
+            if (!input.value.trim()) {
+                alert("Veuillez remplir tous les champs.");
+                return;
+            }
+        }
+
+        // Préparer les données
+        let params = {
+            nom: document.getElementById("nom").value,
+            prenom: document.getElementById("prenom").value,
+            date_naissance: document.getElementById("date-naissance").value,
+            adresse: document.getElementById("adresse").value,
+            telephone: document.getElementById("telephone").value,
+            email: document.getElementById("email").value,
+            ville: document.getElementById("ville").value,
+            poste: document.getElementById("poste").value,
+            formation: document.getElementById("formation").value,
+            experience: document.getElementById("experience").value
+        };
+
+        // Envoyer l'email via EmailJS
+        emailjs.send("service_r6fed0y", "template_v1ejjd3", params)
+            .then(function(response) {
+                alert("Votre candidature a été envoyée avec succès !");
+                
+                // Réinitialisation des champs après 500ms
+                setTimeout(() => {
+                    document.getElementById("candidatureForm").reset();
+                }, 500);
+            }, function(error) {
+                alert("Erreur lors de l'envoi du mail. Veuillez réessayer.");
+                console.error("EmailJS Error:", error);
+            });
+    });
+</script>
+
+</body>
+</html>
